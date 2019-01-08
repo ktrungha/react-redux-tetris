@@ -1,5 +1,5 @@
 import { SagaIterator, delay } from 'redux-saga';
-import { takeEvery, put, fork, take, cancel, call, select } from 'redux-saga/effects';
+import { takeLatest, put, fork, take, cancel, call, select } from 'redux-saga/effects';
 import { getType } from 'typesafe-actions';
 import {
   newGame,
@@ -107,5 +107,5 @@ function* progressGameSaga(): SagaIterator {
 }
 
 export default function* rootSaga(): SagaIterator {
-  yield takeEvery(getType(newGame), newGameSaga);
+  yield takeLatest(getType(newGame), newGameSaga);
 }
