@@ -1,4 +1,4 @@
-Demo at: https://ktrungha.github.io/tetris/
+Demo at: https://ktrungha.github.io/tetris/index.html
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
