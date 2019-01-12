@@ -7,7 +7,7 @@ export function genPieceType(): PieceTypes {
   return pieceType as PieceTypes;
 }
 
-export function merge(content: boolean[][], piece?: Piece) {
+export function merge(content: string[][], piece?: Piece) {
   if (!piece) {
     return content;
   }
@@ -18,7 +18,7 @@ export function merge(content: boolean[][], piece?: Piece) {
   for (let i = 0; i < pieceCells.length; i += 1) {
     for (let j = 0; j < pieceCells[0].length; j += 1) {
       mergedContent[piece.y + i][piece.x + j] =
-        pieceCells[i][j] || content[piece.y + i][piece.x + j];
+        pieceCells[i][j] + content[piece.y + i][piece.x + j];
     }
   }
 

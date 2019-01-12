@@ -27,7 +27,7 @@ export const land = createAction('land');
 export const score = createAction('score');
 
 export interface State {
-  content: boolean[][];
+  content: string[][];
   piece?: Piece;
   nextPiece?: Piece;
   score: number;
@@ -37,11 +37,11 @@ const actions = { newGame, setupGame, movePiece, land, nextPieceEnters, rotate, 
 
 type Action = ActionType<typeof actions>;
 
-const emptyContent: boolean[][] = [];
+const emptyContent: string[][] = [];
 for (let i = 0; i < BOARD_HEIGHT; i += 1) {
-  const row: boolean[] = [];
+  const row: string[] = [];
   for (let j = 0; j < BOARD_WIDTH; j += 1) {
-    row.push(false);
+    row.push('');
   }
 
   emptyContent.push(row);
@@ -162,16 +162,16 @@ export default function(state: State = { content: emptyContent, score: 0 }, acti
         score += 80;
       }
 
-      const newContent = [] as boolean[][];
+      const newContent = [] as string[][];
       for (let i = 0; i < content.length; i += 1) {
         if (scoringRows.indexOf(i) < 0) {
           newContent.push(content[i]);
         }
       }
       for (let i = 0; i < scoringRows.length; i += 1) {
-        const row = [] as boolean[];
+        const row = [] as string[];
         for (let j = 0; j < BOARD_WIDTH; j += 1) {
-          row.push(false);
+          row.push('');
         }
         newContent.push(row);
       }

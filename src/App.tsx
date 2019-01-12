@@ -5,11 +5,11 @@ import { throttle } from 'lodash';
 import { newGame, State, movePiece, rotate } from './reducer';
 import { connect } from 'react-redux';
 
-const emptyContentSmall: boolean[][] = [];
+const emptyContentSmall: string[][] = [];
 for (let i = 0; i < 2; i += 1) {
-  const row: boolean[] = [];
+  const row: string[] = [];
   for (let j = 0; j < 4; j += 1) {
-    row.push(false);
+    row.push('');
   }
 
   emptyContentSmall.push(row);
@@ -34,7 +34,7 @@ class App extends Component<AppProps, {}> {
   constructor(props: AppProps) {
     super(props);
 
-    this.keyDown = throttle(this.keyDown.bind(this), 100);
+    this.keyDown = throttle(this.keyDown.bind(this), 50);
   }
 
   componentDidMount() {

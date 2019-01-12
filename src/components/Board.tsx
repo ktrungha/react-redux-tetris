@@ -16,7 +16,7 @@ const Cell = styled.td`
 
 interface BoardProps {
   piece?: Piece;
-  content: boolean[][];
+  content: string[][];
 }
 
 class Board extends React.PureComponent<BoardProps, {}> {
@@ -39,7 +39,7 @@ class Board extends React.PureComponent<BoardProps, {}> {
                   return (
                     <Cell>
                       {cell ? (
-                        <div style={{ backgroundColor: 'pink', width: '100%', height: '100%' }} />
+                        <div style={{ backgroundColor: cell, width: '100%', height: '100%' }} />
                       ) : null}
                     </Cell>
                   );

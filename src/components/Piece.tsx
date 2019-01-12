@@ -7,7 +7,7 @@ class Piece {
   readonly type: Type;
   readonly state: State;
 
-  constructor(x: number, y: number, type: Type, state : State = 0) {
+  constructor(x: number, y: number, type: Type, state: State = 0) {
     this.x = x;
     this.y = y;
     this.type = type;
@@ -15,7 +15,7 @@ class Piece {
   }
 
   public rotate() {
-    let newState : State = 0;
+    let newState: State = 0;
     if (this.state === 0) {
       newState = 3;
     } else if (this.state === 1) {
@@ -33,7 +33,29 @@ class Piece {
     return new Piece(this.x + deltaX, this.y + deltaY, this.type, this.state);
   }
 
-  public getCells(): boolean[][] {
+  public getCells(): string[][] {
+    const cells = this.getCells_();
+    let color = '';
+    if (this.type === 'i') {
+      color = '#00bcd4';
+    } else if (this.type === 'j') {
+      color = '#2196f3';
+    } else if (this.type === 'l') {
+      color = '#ff9800';
+    } else if (this.type === 'o') {
+      color = '#ffeb3b';
+    } else if (this.type === 's') {
+      color = '#4caf50';
+    } else if (this.type === 't') {
+      color = '#9c27b0';
+    } else if (this.type === 'z') {
+      color = '#f44336';
+    }
+
+    return cells.map(row => row.map(val => (val ? color : '')));
+  }
+
+  getCells_(): boolean[][] {
     if (this.type === 'i') {
       if (this.state === 1 || this.state === 3) {
         return [[true], [true], [true], [true]];
