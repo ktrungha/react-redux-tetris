@@ -26,14 +26,30 @@ export const land = createAction('land');
 
 export const score = createAction('score');
 
+export const collapse = createAction('collapse');
+
+export const pause = createAction('pause');
+
 export interface State {
   content: string[][];
   piece?: Piece;
   nextPiece?: Piece;
   score: number;
+  scoringRows: number[];
+  paused: boolean;
 }
 
-const actions = { newGame, setupGame, movePiece, land, nextPieceEnters, rotate, score };
+const actions = {
+  newGame,
+  setupGame,
+  movePiece,
+  land,
+  nextPieceEnters,
+  rotate,
+  score,
+  collapse,
+  pause,
+};
 
 type Action = ActionType<typeof actions>;
 
@@ -47,7 +63,10 @@ for (let i = 0; i < BOARD_HEIGHT; i += 1) {
   emptyContent.push(row);
 }
 
-export default function(state: State = { content: emptyContent, score: 0 }, action: Action) {
+export default function(
+  state: State = { content: emptyContent, score: 0, scoringRows: [], paused: false },
+  action: Action,
+) {
   switch (action.type) {
     case getType(setupGame): {
       return {
@@ -162,6 +181,11 @@ export default function(state: State = { content: emptyContent, score: 0 }, acti
         score += 80;
       }
 
+      return { ...state, score, scoringRows };
+    }
+    case getType(collapse): {
+      const content = state.content;
+      const scoringRows = state.scoringRows;
       const newContent = [] as string[][];
       for (let i = 0; i < content.length; i += 1) {
         if (scoringRows.indexOf(i) < 0) {
@@ -178,9 +202,12 @@ export default function(state: State = { content: emptyContent, score: 0 }, acti
 
       return {
         ...state,
-        score,
         content: newContent,
+        scoringRows: [],
       };
+    }
+    case getType(pause): {
+      return { ...state, paused: !state.paused };
     }
     default:
       return state;

@@ -32,3 +32,12 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes collapse {
+  from {
+    height: 25px;
+  }
+  to {
+    height: 0;
+  }
+}

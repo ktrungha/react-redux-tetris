@@ -1,5 +1,5 @@
 import { SagaIterator, delay } from 'redux-saga';
-import { takeLatest, put, fork, take, cancel, call, select } from 'redux-saga/effects';
+import { takeLatest, put, fork, take, cancel, call, select, all, race } from 'redux-saga/effects';
 import { getType } from 'typesafe-actions';
 import {
   newGame,
@@ -10,6 +10,8 @@ import {
   nextPieceEnters,
   land,
   score,
+  collapse,
+  pause,
 } from './reducer';
 import { genPieceType } from './logic';
 import Piece from './components/Piece';
@@ -42,7 +44,14 @@ function* newGameSaga(): SagaIterator {
 
 function* progressGameSaga(): SagaIterator {
   while (true) {
-    yield call(delay, 500);
+    const { takePause } = yield race({
+      delay: call(delay, 500),
+      takePause: take(getType(pause)),
+    });
+
+    if (takePause) {
+      yield take(getType(pause));
+    }
 
     let data: { content: boolean[][]; piece: Piece; nextPiece: Piece } = yield select(
       (state: State) => {
@@ -81,6 +90,13 @@ function* progressGameSaga(): SagaIterator {
       yield put({ type: getType(land) });
 
       yield put({ type: getType(score) });
+
+      const scoringRows: number[] = yield select((state: State) => state.scoringRows);
+      if (scoringRows.length > 0) {
+        // wait for animation of collapsing completes
+        yield call(delay, 250);
+        yield put({ type: getType(collapse) });
+      }
 
       yield put({ type: getType(nextPieceEnters), payload: { nextPiece, piece } });
 

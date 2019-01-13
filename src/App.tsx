@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Board from './components/Board';
 import { throttle } from 'lodash';
-import { newGame, State, movePiece, rotate } from './reducer';
+import { newGame, State, movePiece, rotate, pause } from './reducer';
 import { connect } from 'react-redux';
 
 const emptyContentSmall: string[][] = [];
@@ -21,10 +21,12 @@ function mapStateToProps(state: State) {
     piece: state.piece,
     nextPiece: state.nextPiece,
     score: state.score,
+    paused: state.paused,
+    scoringRows: state.scoringRows,
   };
 }
 
-const mapDispatchToProps = { newGame, movePiece, rotate };
+const mapDispatchToProps = { newGame, movePiece, rotate, pause };
 
 type DispatchProps = typeof mapDispatchToProps;
 
@@ -58,10 +60,10 @@ class App extends Component<AppProps, {}> {
   }
 
   render() {
-    const { content, piece, nextPiece, score } = this.props;
+    const { content, piece, nextPiece, score, scoringRows } = this.props;
     return (
       <div className="App">
-        <Board piece={piece} content={content} />
+        <Board piece={piece} content={content} scoringRows={scoringRows} />
         <div
           style={{
             padding: '20px',
@@ -73,10 +75,13 @@ class App extends Component<AppProps, {}> {
           <div style={{ margin: '25px' }}>Score: {score}</div>
           <div>
             <div style={{ margin: '15px', textAlign: 'center' }}>Next Piece:</div>
-            <Board piece={nextPiece} content={emptyContentSmall} />
+            <Board piece={nextPiece} content={emptyContentSmall} scoringRows={[]} />
           </div>
           <div style={{ margin: '25px' }}>
             <button onClick={this.props.newGame}>New Game</button>
+          </div>
+          <div style={{ margin: '25px' }}>
+            <button onClick={this.props.pause}>{this.props.paused ? 'Resume' : 'Pause'}</button>
           </div>
         </div>
       </div>
